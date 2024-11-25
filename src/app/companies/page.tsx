@@ -3,6 +3,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getAllCompanies } from "@/data/companies";
 import CompaniesClient from "@/components/CompaniesClient";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "لیست شرکت‌ها | تجربت",
   description: "جستجو و مشاهده لیست کامل شرکت‌های ایرانی به همراه تجربیات کاری",
