@@ -3,29 +3,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getAllCompanies } from "@/data/companies";
 import CompaniesClient from "@/components/CompaniesClient";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+
+export async function generateStaticParams() {
+  return [{}];
+}
 
 export const metadata = {
   title: "لیست شرکت‌ها | تجربت",
   description: "جستجو و مشاهده لیست کامل شرکت‌های ایرانی به همراه تجربیات کاری",
 };
 
-interface SearchParams {
-  page?: string;
-  search?: string;
-  sort?: string;
-}
-
-export default function CompaniesPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default function CompaniesPage() {
   const companies = getAllCompanies();
-  const page = Number(searchParams.page) || 1;
-  const search = searchParams.search || "";
-  const sort = searchParams.sort || "reviews-desc";
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/50">
       <div className="container mx-auto px-4 py-8">
@@ -45,12 +35,7 @@ export default function CompaniesPage({
             </div>
           }
         >
-          <CompaniesClient
-            companies={companies}
-            initialPage={page}
-            initialSearch={search}
-            initialSort={sort}
-          />
+          <CompaniesClient companies={companies} />
         </Suspense>
       </div>
     </main>

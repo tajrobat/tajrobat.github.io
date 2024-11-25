@@ -58,17 +58,16 @@ const sortOptions = [
 
 export default function CompaniesClient({
   companies,
-  initialPage = 1,
-  initialSearch = "",
-  initialSort = "reviews-desc",
+}: {
+  companies: Company[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [sortBy, setSortBy] = useState(initialSort);
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("reviews-desc");
+  const [currentPage, setCurrentPage] = useState(1);
   const [isClient, setIsClient] = useState(false);
   const [searchResults, setSearchResults] = useState<Company[]>([]);
 
