@@ -23,6 +23,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import ArchiveNotice from "@/components/ArchiveNotice";
 import { Company } from "@/app/types";
+import Link from "next/link";
 
 const ITEMS_PER_PAGE = 32;
 
@@ -182,6 +183,12 @@ export const HomeClient = ({ companies }: { companies: Company[] }) => {
           <h6 className="text-gray-500 text-md font-bold">
             تجربه را تجربه کردن خطاست!
           </h6>
+          <Link
+            href="/feed"
+            className="text-orange-500 px-4 py-2 rounded-md mt-4 outline outline-2 outline-orange-500 hover:bg-orange-500 hover:text-white transition-colors duration-200"
+          >
+            مشاهده تجربه ها
+          </Link>
         </div>
 
         <div className="max-w-xl mx-auto mb-8">
