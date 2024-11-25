@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { Vazirmatn } from "next/font/google";
 import { defaultMetadata } from "./metadata";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 const vazirmatn = Vazirmatn({ subsets: ["arabic"], variable: "--font-vazir" });
 
@@ -16,9 +18,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    'max-snippet': -1,
-    'max-image-preview': 'large',
-    'max-video-preview': -1,
+    "max-snippet": -1,
+    "max-image-preview": "large",
+    "max-video-preview": -1,
   },
   icons: {
     icon: [
@@ -60,7 +62,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body className={vazirmatn.className}>{children}</body>
+      <body className={vazirmatn.className}>
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }
