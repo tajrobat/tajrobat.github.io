@@ -67,7 +67,11 @@ export default function Header() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList className="flex gap-6">
               <NavigationMenuItem>
-                <Link href="/contribute" legacyBehavior passHref>
+                <Link
+                  href="https://github.com/tajrobat/tajrobat.github.io"
+                  legacyBehavior
+                  passHref
+                >
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     مشارکت
                   </NavigationMenuLink>
