@@ -63,7 +63,7 @@ export default async function ReviewPage({
       <div className="container mx-auto px-4 py-8">
         <ArchiveNotice />
         <Link
-          href={`/company/${review.company.slug}`}
+          href={`/company/${review.company.slug ?? review.company.id}`}
           className="inline-flex items-center gap-2 mb-8 text-muted-foreground hover:text-primary transition-colors group"
         >
           <ArrowRight className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
@@ -76,7 +76,7 @@ export default async function ReviewPage({
               <div className="space-y-1">
                 <CardTitle className="text-2xl">{review.title}</CardTitle>
                 <Link
-                  href={`/company/${review.company.slug}`}
+                  href={`/company/${review.company.slug ?? review.company.id}`}
                   className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Building2 className="h-4 w-4" />

@@ -9,7 +9,7 @@ interface CompanyCardProps {
 export default function CompanyCard({ company }: CompanyCardProps) {
   const companyUrl = company.slug
     ? `/company/${company.slug}`
-    : `/company/id/${company.id}`;
+    : `/company/${company.id}`;
 
   return (
     <Link href={companyUrl}>

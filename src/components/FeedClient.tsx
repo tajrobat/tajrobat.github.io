@@ -99,7 +99,9 @@ export default function FeedClient({ companies }: { companies: Company[] }) {
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
                   <Link
-                    href={`/company/${review.company.slug}`}
+                    href={`/company/${
+                      review.company.slug ?? review.company.id
+                    }`}
                     className="font-semibold hover:text-primary transition-colors"
                   >
                     {review.company.name}

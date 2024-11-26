@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  let companies: { slug: string }[] = [];
+  let companies: { slug: string | null; id: number }[] = [];
   try {
     companies = getAllCompanies();
   } catch (error) {
@@ -58,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   const companyUrls = companies.map((company) => ({
-    url: `${baseUrl}/company/${company.slug}`,
+    url: `${baseUrl}/company/${company.slug ?? company.id}`,
     lastModified,
     changeFrequency: "weekly" as const,
     priority: 0.8,

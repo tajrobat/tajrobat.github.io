@@ -15,7 +15,7 @@ import ArchiveNotice from "@/components/ArchiveNotice";
 export function generateStaticParams() {
   const companies = getAllCompanies();
   return companies.map((company) => ({
-    slug: String(company.slug),
+    slug: company.slug ? String(company.slug) : String(company.id),
   }));
 }
 
@@ -100,7 +100,6 @@ const filterReviews = (reviews: Review[], type: string) => {
   }
 };
 
-// Page component
 export default async function CompanyPage({
   params,
 }: {
@@ -217,7 +216,7 @@ export default async function CompanyPage({
                 <TabsList className="w-full flex">
                   {company.reviews.length > 0 && (
                     <TabsTrigger value="all" className="text-sm flex-1">
-                      همه نظرات
+                      ه��ه نظرات
                     </TabsTrigger>
                   )}
                   {filterReviews(company.reviews, "working").length > 0 && (
@@ -610,12 +609,14 @@ export async function generateMetadata(context: {
     openGraph: {
       title: metadata.title,
       description: metadata.description,
-      url: `/company/${actualParams.slug}`,
+      url: `/company/${actualParams.slug ?? company.id}`,
       type: "website",
       locale: "fa_IR",
     },
     alternates: {
-      canonical: `https://tajrobe.wiki/company/${actualParams.slug}`,
+      canonical: `https://tajrobe.wiki/company/${
+        actualParams.slug ?? company.id
+      }`,
     },
   };
 }
