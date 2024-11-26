@@ -15,7 +15,7 @@ import ArchiveNotice from "@/components/ArchiveNotice";
 export function generateStaticParams() {
   const companies = getAllCompanies();
   return companies.map((company) => ({
-    slug: company.slug,
+    slug: String(company.slug),
   }));
 }
 
