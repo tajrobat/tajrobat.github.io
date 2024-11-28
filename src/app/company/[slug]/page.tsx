@@ -216,7 +216,7 @@ export default async function CompanyPage({
                 <TabsList className="w-full flex">
                   {company.reviews.length > 0 && (
                     <TabsTrigger value="all" className="text-sm flex-1">
-                      ه��ه نظرات
+                      همه نظرات
                     </TabsTrigger>
                   )}
                   {filterReviews(company.reviews, "working").length > 0 && (

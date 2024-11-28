@@ -10,6 +10,7 @@
     "deploy": "next build && touch out/.nojekyll"
   },
   "dependencies": {
+    "@next/third-parties": "^15.0.3",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-navigation-menu": "^1.2.1",
