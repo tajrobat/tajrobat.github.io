@@ -1,4 +1,33 @@
 User-agent: *
-Allow: /
 
-Sitemap: https://tajrobat.github.io/sitemap.xml 
+# Allow main pages and sections
+Allow: /
+Allow: /about
+Allow: /companies
+Allow: /company/
+Allow: /review/
+Allow: /feed
+
+# Block API and resource routes
+Disallow: /api/*
+Disallow: /_next/*
+Disallow: /*/_next/*
+Disallow: /static/*
+Disallow: /assets/*
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*.json$
+
+# Block query parameters
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*page=
+Disallow: /*?*search=
+Disallow: /*?*rating=
+Disallow: /*?*status=
+
+# Optimize crawl rate
+Crawl-delay: 5
+
+# Sitemaps
+Sitemap: https://tajrobat.github.io/sitemap.xml
