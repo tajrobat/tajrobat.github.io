@@ -51,16 +51,20 @@ jobs:
         id: companies-cache
         with:
           path: |
-            ${{ github.workspace }}/public/companies.json
+            ${{ github.workspace }}/cached-companies.json
           key: ${{ runner.os }}-companies-${{ hashFiles('src/utils/companies.js') }}
           restore-keys: |
             ${{ runner.os }}-companies-
 
-      - name: Cache Companies
+      - name: Generate Companies Data
         if: steps.companies-cache.outputs.cache-hit != 'true'
         run: |
           pnpm add -D dotenv
           node --experimental-json-modules --experimental-specifier-resolution=node src/utils/companies.js
+
+      - name: Move Companies Data
+        run: |
+          cp cached-companies.json ${{ github.workspace }}/cached-companies.json || true
 
       - name: Install next-sitemap
         run: pnpm add next-sitemap
