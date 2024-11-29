@@ -43,11 +43,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
+      - name: Cache Companies Data
+        uses: actions/cache@v4
+        id: companies-cache
+        with:
+          path: |
+            ${{ github.workspace }}/public/companies.json
+          key: ${{ runner.os }}-companies-${{ hashFiles('src/utils/companies.js') }}
+          restore-keys: |
+            ${{ runner.os }}-companies-
+
+      - name: Cache Companies
+        if: steps.companies-cache.outputs.cache-hit != 'true'
+        run: node -e "import('./src/utils/companies.js').then(m => m.fetchAndCacheCompanies())" --experimental-specifier-resolution=node
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Cache Companies
-        run: node -e "import('./src/utils/companies.js').then(m => m.fetchAndCacheCompanies())" --experimental-specifier-resolution=node
+      - name: Install next-sitemap
+        run: pnpm add next-sitemap
 
       - name: Generate Sitemap
         run: pnpm next-sitemap
