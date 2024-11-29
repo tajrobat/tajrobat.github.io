@@ -65,11 +65,11 @@ jobs:
       - name: Install next-sitemap
         run: pnpm add next-sitemap
 
-      - name: Generate Sitemap
-        run: pnpm next-sitemap
-
       - name: Build
         run: pnpm run build
+
+      - name: Generate Sitemap
+        run: pnpm next-sitemap --config next-sitemap.config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
