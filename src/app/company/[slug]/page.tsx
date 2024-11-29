@@ -614,7 +614,7 @@ export async function generateMetadata(context: {
       locale: "fa_IR",
     },
     alternates: {
-      canonical: `https://tajrobe.wiki/company/${
+      canonical: `https://tajrobat.github.io/company/${
         actualParams.slug ?? company.id
       }`,
     },
