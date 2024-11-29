@@ -50,7 +50,7 @@ jobs:
         run: node -e "import('./src/utils/companies.js').then(m => m.fetchAndCacheCompanies())" --experimental-specifier-resolution=node
 
       - name: Generate Sitemap
-        run: node -e "import('./src/app/sitemap.js').then(m => m.default())" --experimental-specifier-resolution=node
+        run: pnpm next-sitemap
 
       - name: Build
         run: pnpm run build

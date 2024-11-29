@@ -1,5 +1,5 @@
-import { getAllCompanies } from "@/data/companies";
-import { getAllReviewIds } from "@/data/reviews";
+import { getAllCompanies } from "../data/companies";
+import { getAllReviewIds } from "../data/reviews";
 import * as fs from "fs";
 import * as path from "path";
 
