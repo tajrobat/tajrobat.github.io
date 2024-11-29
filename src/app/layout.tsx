@@ -4,7 +4,7 @@ import { Vazirmatn } from "next/font/google";
 import { defaultMetadata } from "./metadata";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleTagManager , GoogleAnalytics } from "@next/third-parties/google";
 
 const vazirmatn = Vazirmatn({ subsets: ["arabic"], variable: "--font-vazir" });
 
@@ -72,6 +72,7 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        <GoogleAnalytics gaId="G-2Z2T81KZ7Y" />
         <GoogleTagManager gtmId="GTM-MQDDH462" />
         <div className="flex min-h-screen flex-col">
           <Header />
