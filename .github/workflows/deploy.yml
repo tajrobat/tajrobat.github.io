@@ -55,7 +55,10 @@ jobs:
         run: pnpm run build
 
       - name: Generate Sitemap
-        run: pnpm next-sitemap --config next-sitemap.config.js
+        run: |
+          pnpm next-sitemap --config next-sitemap.config.js
+          cp -r public/*.xml out/
+          cp -r public/robots.txt out/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
