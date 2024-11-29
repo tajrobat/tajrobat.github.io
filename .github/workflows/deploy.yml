@@ -59,8 +59,8 @@ jobs:
       - name: Cache Companies
         if: steps.companies-cache.outputs.cache-hit != 'true'
         run: |
-          pnpm add dotenv
-          node -e "import('./src/utils/companies.js').then(m => m.fetchAndCacheCompanies())" --experimental-specifier-resolution=node
+          pnpm add -D dotenv
+          node --experimental-json-modules --experimental-specifier-resolution=node src/utils/companies.js
 
       - name: Install next-sitemap
         run: pnpm add next-sitemap
