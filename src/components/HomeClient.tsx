@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import CompanyCard from "@/components/CompanyCard";
 import {
   Pagination,
@@ -22,8 +22,8 @@ import {
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 import ArchiveNotice from "@/components/ArchiveNotice";
-import { Company } from "@/app/types";
 import Link from "next/link";
+import { companies } from "@/data/companies";
 
 const ITEMS_PER_PAGE = 32;
 
@@ -62,7 +62,18 @@ const sortOptions: SortOption[] = [
   },
 ];
 
-export const HomeClient = ({ companies }: { companies: Company[] }) => {
+// Pre-calculate total reviews once
+const totalReviews = companies.reduce(
+  (total, company) => total + (company.reviews?.length || 0),
+  0
+);
+
+// Pre-sort companies by default sort
+const defaultSortFn = (a: any, b: any) =>
+  (b.reviews?.length || 0) - (a.reviews?.length || 0);
+const initialSortedCompanies = [...companies].sort(defaultSortFn);
+
+export const HomeClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -72,8 +83,9 @@ export const HomeClient = ({ companies }: { companies: Company[] }) => {
   const [searchQuery, setSearchQuery] = useState(
     () => searchParams.get("q") || ""
   );
-  const [searchResults, setSearchResults] = useState<typeof companies>([]);
-  const [isClient, setIsClient] = useState(false);
+  const [searchResults, setSearchResults] = useState<typeof companies>(
+    initialSortedCompanies
+  );
   const [sortBy, setSortBy] = useState<string>(
     () => searchParams.get("sort") || "reviews-desc"
   );
@@ -84,16 +96,6 @@ export const HomeClient = ({ companies }: { companies: Company[] }) => {
       0
     );
   };
-
-  useEffect(() => {
-    setIsClient(true);
-    const defaultSort = sortOptions.find((opt) => opt.value === "reviews-desc");
-    if (defaultSort) {
-      setSearchResults([...companies].sort(defaultSort.sortFn));
-    } else {
-      setSearchResults(companies);
-    }
-  }, []);
 
   const debouncedSearch = useCallback(
     debounce((query: string) => {
@@ -157,35 +159,52 @@ export const HomeClient = ({ companies }: { companies: Company[] }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!isClient) {
-    return null;
+  if (searchResults.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-black dark:to-gray-900">
+        <div className="relative container mx-auto px-4 py-8 min-h-[100vh]">
+          <div className="flex flex-col items-center justify-center h-[40vh] text-center mb-12">
+            <h1
+              className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-orange-500 pt-2 w-48 h-20"
+              style={{ contain: "layout" }}
+            >
+              تَجرُبَت
+            </h1>
+            <div className="w-32 h-16 bg-gray-200 dark:bg-gray-800 rounded-lg mt-6 animate-pulse" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-black dark:to-gray-900">
-      <div className="absolute inset-0 bg-center" />
-      {/* <Header /> */}
-
-      <div className="relative container mx-auto px-4 py-8">
+      <div className="relative container mx-auto px-4 py-8 min-h-[100vh]">
         <ArchiveNotice />
-        <div className="flex flex-col items-center justify-center min-h-[40vh] text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-orange-500 pt-2">
+        <div className="flex flex-col items-center justify-center h-[40vh] text-center mb-12">
+          <h1
+            className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-orange-500 pt-2 w-48 h-20 leading-tight"
+            style={{
+              contain: "layout",
+              fontDisplay: "swap",
+            }}
+          >
             تَجرُبَت
           </h1>
-          <div className="flex flex-col items-center gap-2 mb-6">
-            <div className="text-4xl font-bold text-gray-800 dark:text-gray-200">
-              {getTotalReviews().toLocaleString("fa-IR")}
+          <div className="flex flex-col items-center gap-2 mb-6 w-32 h-16">
+            <div
+              className="text-4xl font-bold text-gray-800 dark:text-gray-200"
+              style={{ fontDisplay: "swap" }}
+            >
+              {totalReviews.toLocaleString("fa-IR")}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-4 py-1 rounded-full">
               تجربه ثبت شده
             </div>
           </div>
-          <h6 className="text-gray-500 text-md font-bold">
-            تجربه را تجربه کردن خطاست!
-          </h6>
           <Link
             href="/feed"
-            className="text-orange-500 px-4 py-2 rounded-md mt-4 outline outline-2 outline-orange-500 hover:bg-orange-500 hover:text-white transition-colors duration-200"
+            className="text-orange-500 px-4 py-2 rounded-md mt-4 outline outline-2 outline-orange-500 hover:bg-orange-500 hover:text-white transition-colors duration-200 w-40 h-10 inline-flex items-center justify-center"
           >
             مشاهده تجربه ها
           </Link>
@@ -205,8 +224,8 @@ export const HomeClient = ({ companies }: { companies: Company[] }) => {
           </div>
         ) : (
           <>
-            <div className="flex justify-between items-center mb-6 p-2">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+            <div className="flex justify-between items-center mb-6 p-2 h-[64px]">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
                 لیست شرکت ها {searchQuery && `(${searchResults.length} نتیجه)`}
               </h2>
 
@@ -224,18 +243,18 @@ export const HomeClient = ({ companies }: { companies: Company[] }) => {
               </Select>
             </div>
 
-            <div className="flex flex-wrap justify-center">
+            <div className="flex flex-wrap justify-center min-h-[200px]">
               {currentCompanies.map((company) => (
                 <div
                   key={company.id}
-                  className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+                  className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2 min-h-[300px]"
                 >
                   <CompanyCard company={company} />
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-8 h-[48px]">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>

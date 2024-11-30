@@ -4,7 +4,7 @@ import { Vazirmatn } from "next/font/google";
 import { defaultMetadata } from "./metadata";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { GoogleTagManager , GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 
 const vazirmatn = Vazirmatn({ subsets: ["arabic"], variable: "--font-vazir" });
 
@@ -59,8 +59,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
-      <body className={vazirmatn.className}>
+    <html lang="fa" dir="rtl" className="h-full">
+      <body className={vazirmatn.className + " h-full"}>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MQDDH462"
