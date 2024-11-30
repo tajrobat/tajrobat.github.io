@@ -55,6 +55,18 @@ export default function Header() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList className="flex gap-6">
               <NavigationMenuItem>
+                <Link href="/blog" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    وبلاگ
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList className="flex gap-6">
+              <NavigationMenuItem>
                 <Link href="/feed" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     تجربه ها
@@ -133,7 +145,15 @@ export default function Header() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contribute" className="block py-2 text-lg">
+                  <Link href="/blog" className="block py-2 text-lg">
+                    وبلاگ
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="https://github.com/tajrobat/tajrobat.github.io"
+                    className="block py-2 text-lg"
+                  >
                     مشارکت
                   </Link>
                 </li>

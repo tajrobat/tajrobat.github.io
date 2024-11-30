@@ -2,7 +2,7 @@
 import defaultTheme from "tailwindcss/defaultTheme";
 
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}", "./content/**/*.{md,mdx}"],
   theme: {
     extend: {
       borderRadius: {
