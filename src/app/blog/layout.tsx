@@ -1,8 +1,26 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "وبلاگ | تجربت",
-  description: "مقالات و راهنمای‌های مرتبط با کار و استخدام",
+  title: "وبلاگ تجربت | مقالات و راهنمای‌های مرتبط با کار و استخدام",
+  description:
+    "مجموعه مقالات و راهنماهای کاربردی درباره کار، استخدام، مصاحبه شغلی و تجربیات کاری در شرکت‌های ایرانی",
+  keywords: [
+    "وبلاگ تجربت",
+    "مقالات کاری",
+    "راهنمای استخدام",
+    "مصاحبه شغلی",
+    "تجربیات کاری",
+  ],
+  openGraph: {
+    title: "وبلاگ تجربت",
+    description: "مقالات و راهنمای‌های مرتبط با کار و استخدام",
+    type: "website",
+    locale: "fa_IR",
+    siteName: "تجربت",
+  },
+  alternates: {
+    canonical: "https://tajrobat.github.io/blog",
+  },
 };
 
 export default function BlogLayout({

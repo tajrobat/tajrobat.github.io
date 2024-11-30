@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { Metadata } from "next";
+import { BlogJsonLd } from "@/components/BlogJsonLd";
 
 export async function generateStaticParams() {
   const posts = await getAllBlogPosts();
@@ -15,12 +17,60 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const param = await params.slug;
+  const post = await getBlogPostBySlug(param);
+
+  if (!post) {
+    return {};
+  }
+
+  const ogImage = post.image || "/og-default.jpg";
+
+  return {
+    title: `${post.title} | وبلاگ تجربت`,
+    description: post.description,
+    authors: [{ name: post.author }],
+    keywords: post.tags,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      publishedTime: post.date,
+      authors: [post.author],
+      tags: post.tags,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: `https://tajrobat.github.io/blog/${params.slug}`,
+    },
+  };
+}
+
 export default async function BlogPostPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const post = await getBlogPostBySlug(params.slug);
+  const param = await params.slug;
+  const post = await getBlogPostBySlug(param);
 
   if (!post) {
     notFound();
@@ -28,6 +78,7 @@ export default async function BlogPostPage({
 
   return (
     <div className="max-w-3xl mx-auto">
+      <BlogJsonLd post={post} />
       <Link
         href="/blog"
         className="inline-flex items-center gap-2 mb-8 text-muted-foreground hover:text-primary transition-colors group"
