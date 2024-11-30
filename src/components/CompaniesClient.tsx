@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Company } from "@/app/types";
 import CompanyCard from "./CompanyCard";
 import SearchBar from "./SearchBar";
 import {
@@ -22,8 +21,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import debounce from "lodash/debounce";
+import { Company } from "@/app/types/index";
 
-const ITEMS_PER_PAGE = 32; // Updated to match HomeClient
+const ITEMS_PER_PAGE = 32;
 
 const sortOptions = [
   {
@@ -56,6 +56,12 @@ const sortOptions = [
   },
 ];
 
+// Pre-sort companies by default sort
+const getInitialSortedCompanies = (companies: Company[]) => {
+  const defaultSort = sortOptions.find((opt) => opt.value === "reviews-desc");
+  return [...companies].sort(defaultSort?.sortFn);
+};
+
 export default function CompaniesClient({
   companies,
 }: {
@@ -65,24 +71,35 @@ export default function CompaniesClient({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("reviews-desc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isClient, setIsClient] = useState(false);
-  const [searchResults, setSearchResults] = useState<Company[]>([]);
+  // Initialize with URL params or defaults
+  const [searchQuery, setSearchQuery] = useState(
+    () => searchParams.get("search") || ""
+  );
+  const [sortBy, setSortBy] = useState(
+    () => searchParams.get("sort") || "reviews-desc"
+  );
+  const [currentPage, setCurrentPage] = useState(
+    () => Number(searchParams.get("page")) || 1
+  );
+  const [searchResults, setSearchResults] = useState<Company[]>(() =>
+    getInitialSortedCompanies(companies)
+  );
 
-  // Add useEffect for initial client-side setup
-  useEffect(() => {
-    setIsClient(true);
-    const defaultSort = sortOptions.find((opt) => opt.value === "reviews-desc");
-    if (defaultSort) {
-      setSearchResults([...companies].sort(defaultSort.sortFn));
-    } else {
-      setSearchResults(companies);
-    }
-  }, []);
+  const updateURLParams = useCallback(
+    (params: { [key: string]: string }) => {
+      const newSearchParams = new URLSearchParams(searchParams);
+      Object.entries(params).forEach(([key, value]) => {
+        if (value) {
+          newSearchParams.set(key, value);
+        } else {
+          newSearchParams.delete(key);
+        }
+      });
+      router.push(`${pathname}?${newSearchParams.toString()}`);
+    },
+    [pathname, router, searchParams]
+  );
 
-  // Add debounced search
   const debouncedSearch = useCallback(
     debounce((query: string) => {
       const normalizedQuery = query.toLowerCase().trim();
@@ -100,26 +117,9 @@ export default function CompaniesClient({
       setSearchResults(filtered);
       setCurrentPage(1);
     }, 300),
-    [sortBy]
+    [sortBy, companies]
   );
 
-  // Add function to update URL params
-  const updateURLParams = useCallback(
-    (params: { [key: string]: string }) => {
-      const newSearchParams = new URLSearchParams(searchParams);
-      Object.entries(params).forEach(([key, value]) => {
-        if (value) {
-          newSearchParams.set(key, value);
-        } else {
-          newSearchParams.delete(key);
-        }
-      });
-      router.push(`${pathname}?${newSearchParams.toString()}`);
-    },
-    [pathname, router, searchParams]
-  );
-
-  // Modify handleSearch
   const handleSearch = (value: string) => {
     setSearchQuery(value);
     setCurrentPage(1);
@@ -127,7 +127,6 @@ export default function CompaniesClient({
     debouncedSearch(value);
   };
 
-  // Modify handleSort
   const handleSort = (value: string) => {
     setSortBy(value);
     setCurrentPage(1);
@@ -138,25 +137,20 @@ export default function CompaniesClient({
     }
   };
 
-  // Add pagination handler
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     updateURLParams({ page: page.toString() });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Update pagination to use searchResults
   const totalPages = Math.ceil(searchResults.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentCompanies = searchResults.slice(startIndex, endIndex);
 
-  if (!isClient) {
-    return null;
-  }
-
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center h-[80px]">
         <div className="w-full sm:w-96">
           <SearchBar
             value={searchQuery}
@@ -179,18 +173,18 @@ export default function CompaniesClient({
         </Select>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[400px]">
         {currentCompanies.map((company) => (
           <CompanyCard key={company.id} company={company} />
         ))}
       </div>
 
       {searchResults.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-12 min-h-[200px] flex items-center justify-center">
           <p className="text-muted-foreground">هیچ شرکتی یافت نشد.</p>
         </div>
       ) : (
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 h-[48px]">
           <Pagination>
             <PaginationContent>
               <PaginationItem>
