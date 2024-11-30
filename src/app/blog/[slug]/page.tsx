@@ -22,8 +22,8 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const param = await params.slug;
-  const post = await getBlogPostBySlug(param);
+  const param = await params;
+  const post = await getBlogPostBySlug(param.slug);
 
   if (!post) {
     return {};
@@ -59,7 +59,7 @@ export async function generateMetadata({
       images: [ogImage],
     },
     alternates: {
-      canonical: `https://tajrobat.github.io/blog/${params.slug}`,
+      canonical: `https://tajrobat.github.io/blog/${param.slug}`,
     },
   };
 }
@@ -69,8 +69,8 @@ export default async function BlogPostPage({
 }: {
   params: { slug: string };
 }) {
-  const param = await params.slug;
-  const post = await getBlogPostBySlug(param);
+  const param = await params;
+  const post = await getBlogPostBySlug(param.slug);
 
   if (!post) {
     notFound();
