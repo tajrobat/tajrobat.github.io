@@ -159,24 +159,6 @@ export const HomeClient = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (searchResults.length === 0) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-black dark:to-gray-900">
-        <div className="relative container mx-auto px-4 py-8 min-h-[100vh]">
-          <div className="flex flex-col items-center justify-center h-[40vh] text-center mb-12">
-            <h1
-              className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-orange-500 pt-2 w-48 h-20"
-              style={{ contain: "layout" }}
-            >
-              تَجرُبَت
-            </h1>
-            <div className="w-32 h-16 bg-gray-200 dark:bg-gray-800 rounded-lg mt-6 animate-pulse" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-black dark:to-gray-900">
       <div className="relative container mx-auto px-4 py-8 min-h-[100vh]">
@@ -218,120 +200,114 @@ export const HomeClient = () => {
           />
         </div>
 
-        {searchResults.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            نتیجه‌ای یافت نشد
-          </div>
-        ) : (
-          <>
-            <div className="flex justify-between items-center mb-6 p-2 h-[64px]">
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
-                لیست شرکت ها {searchQuery && `(${searchResults.length} نتیجه)`}
-              </h2>
+        <div className="flex justify-between items-center mb-6 p-2 h-[64px]">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
+            لیست شرکت ها {searchQuery && `(${searchResults.length} نتیجه)`}
+          </h2>
 
-              <Select value={sortBy} onValueChange={handleSortChange}>
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="مرتب‌سازی بر اساس" />
-                </SelectTrigger>
-                <SelectContent>
-                  {sortOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex flex-wrap justify-center min-h-[200px]">
-              {currentCompanies.map((company) => (
-                <div
-                  key={company.id}
-                  className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2 min-h-[300px]"
-                >
-                  <CompanyCard company={company} />
-                </div>
+          <Select value={sortBy} onValueChange={handleSortChange}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="مرتب‌سازی بر اساس" />
+            </SelectTrigger>
+            <SelectContent>
+              {sortOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
               ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex flex-wrap justify-center min-h-[200px]">
+          {searchResults.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              نتیجه‌ای یافت نشد
             </div>
+          ) : (
+            currentCompanies.map((company) => (
+              <div
+                key={company.id}
+                className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2 min-h-[300px]"
+              >
+                <CompanyCard company={company} />
+              </div>
+            ))
+          )}
+        </div>
 
-            <div className="flex justify-center mt-8 h-[48px]">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      aria-label="قبی"
-                      href="#"
-                      size="default"
-                      onClick={() =>
-                        handlePageChange(Math.max(1, currentPage - 1))
-                      }
-                      className={
-                        currentPage === 1
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    >
-                      قبلی
-                    </PaginationPrevious>
-                  </PaginationItem>
+        <div className="flex justify-center mt-8 h-[48px]">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  aria-label="قبی"
+                  href="#"
+                  size="default"
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  className={
+                    currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                  }
+                >
+                  قبلی
+                </PaginationPrevious>
+              </PaginationItem>
 
-                  {Array.from({ length: totalPages }, (_, i) => {
-                    const pageNumber = i + 1;
+              {Array.from({ length: totalPages }, (_, i) => {
+                const pageNumber = i + 1;
 
-                    if (
-                      pageNumber === 1 ||
-                      pageNumber === totalPages ||
-                      pageNumber === currentPage ||
-                      pageNumber === currentPage - 1 ||
-                      pageNumber === currentPage + 1
-                    ) {
-                      return (
-                        <PaginationItem key={pageNumber}>
-                          <PaginationLink
-                            size="default"
-                            href="#"
-                            onClick={() => handlePageChange(pageNumber)}
-                            isActive={currentPage === pageNumber}
-                          >
-                            {pageNumber.toLocaleString("fa-IR")}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    } else if (
-                      (pageNumber === currentPage - 2 && currentPage > 3) ||
-                      (pageNumber === currentPage + 2 &&
-                        currentPage < totalPages - 2)
-                    ) {
-                      return (
-                        <PaginationItem key={pageNumber}>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      );
-                    }
-                    return null;
-                  })}
+                if (
+                  pageNumber === 1 ||
+                  pageNumber === totalPages ||
+                  pageNumber === currentPage ||
+                  pageNumber === currentPage - 1 ||
+                  pageNumber === currentPage + 1
+                ) {
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationLink
+                        size="default"
+                        href="#"
+                        onClick={() => handlePageChange(pageNumber)}
+                        isActive={currentPage === pageNumber}
+                      >
+                        {pageNumber.toLocaleString("fa-IR")}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                } else if (
+                  (pageNumber === currentPage - 2 && currentPage > 3) ||
+                  (pageNumber === currentPage + 2 &&
+                    currentPage < totalPages - 2)
+                ) {
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  );
+                }
+                return null;
+              })}
 
-                  <PaginationItem>
-                    <PaginationNext
-                      size="default"
-                      href="#"
-                      onClick={() =>
-                        handlePageChange(Math.min(totalPages, currentPage + 1))
-                      }
-                      className={
-                        currentPage === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    >
-                      بعدی
-                    </PaginationNext>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </>
-        )}
+              <PaginationItem>
+                <PaginationNext
+                  size="default"
+                  href="#"
+                  onClick={() =>
+                    handlePageChange(Math.min(totalPages, currentPage + 1))
+                  }
+                  className={
+                    currentPage === totalPages
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                >
+                  بعدی
+                </PaginationNext>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </div>
     </main>
   );
