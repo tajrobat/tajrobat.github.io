@@ -146,7 +146,7 @@ export default async function CompanyPage({
       {/* Hero Section */}
       <div className="relative bg-primary/5 py-12 overflow-hidden">
         <div className="container mx-auto px-4">
-          <ArchiveNotice />
+          {/* <ArchiveNotice /> */}
           <Link
             href="/"
             className="inline-flex items-center gap-2 mb-8 text-muted-foreground hover:text-primary transition-colors group"

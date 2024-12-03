@@ -162,7 +162,7 @@ export const HomeClient = () => {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-black dark:to-gray-900">
       <div className="relative container mx-auto px-4 py-8 min-h-[100vh]">
-        <ArchiveNotice />
+        {/* <ArchiveNotice /> */}
         <div className="flex flex-col items-center justify-center h-[40vh] text-center mb-12">
           <h1
             className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-orange-500 pt-2 w-48 h-20 leading-tight"
