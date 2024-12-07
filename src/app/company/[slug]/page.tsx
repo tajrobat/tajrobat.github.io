@@ -9,8 +9,7 @@ import { generateCompanyMetadata } from "@/app/metadata";
 import { CompanyJsonLd } from "@/components/JsonLd";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Review } from "@/app/types";
-import ArchiveNotice from "@/components/ArchiveNotice";
+import { Review } from "@/app/types/index";
 
 export function generateStaticParams() {
   const companies = getAllCompanies();
@@ -129,7 +128,7 @@ export default async function CompanyPage({
       icon: Users,
     },
     {
-      label: "حداقل حقوق",
+      label: "حداق�� حقوق",
       value: formatSalary(company.salary_min),
       icon: Briefcase,
     },
@@ -254,7 +253,7 @@ export default async function CompanyPage({
                         <CardHeader className="space-y-3">
                           <div className="flex justify-between items-start">
                             <div>
-                              <CardTitle className="text-xl mb-1">
+                              <CardTitle className="text-xl mb-1 truncate">
                                 {review.title}
                               </CardTitle>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -294,7 +293,7 @@ export default async function CompanyPage({
                         </CardHeader>
                         <CardContent>
                           <div
-                            className="prose prose-sm dark:prose-invert max-w-none"
+                            className="prose prose-lg dark:prose-invert max-w-none break-words overflow-hidden"
                             dangerouslySetInnerHTML={{
                               __html: review.description,
                             }}
@@ -375,7 +374,7 @@ export default async function CompanyPage({
                         </CardHeader>
                         <CardContent className="relative">
                           <div
-                            className="prose prose-sm dark:prose-invert max-w-none"
+                            className="prose prose-lg dark:prose-invert max-w-none"
                             dangerouslySetInnerHTML={{
                               __html: review.description,
                             }}
@@ -462,7 +461,7 @@ export default async function CompanyPage({
                         </CardHeader>
                         <CardContent className="relative">
                           <div
-                            className="prose prose-sm dark:prose-invert max-w-none relative"
+                            className="prose prose-lg dark:prose-invert max-w-none"
                             dangerouslySetInnerHTML={{
                               __html: review.description,
                             }}
