@@ -128,7 +128,7 @@ export default async function CompanyPage({
       icon: Users,
     },
     {
-      label: "حداق�� حقوق",
+      label: "حداقل حقوق",
       value: formatSalary(company.salary_min),
       icon: Briefcase,
     },
