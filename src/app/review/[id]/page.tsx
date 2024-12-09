@@ -134,6 +134,7 @@ export default async function ReviewPage({
 
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <div
+                className="break-all"
                 dangerouslySetInnerHTML={{
                   __html: review.description,
                 }}

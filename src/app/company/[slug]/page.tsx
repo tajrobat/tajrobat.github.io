@@ -293,7 +293,7 @@ export default async function CompanyPage({
                         </CardHeader>
                         <CardContent>
                           <div
-                            className="prose prose-lg dark:prose-invert max-w-none break-words overflow-hidden"
+                            className="prose prose-lg dark:prose-invert max-w-none break-words overflow-hidden break-all"
                             dangerouslySetInnerHTML={{
                               __html: review.description,
                             }}
@@ -380,7 +380,7 @@ export default async function CompanyPage({
                             }}
                           />
                           {review.salary && review.salary > 0 && (
-                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground break-all">
                               <Briefcase className="h-4 w-4" />
                               <span>
                                 حقوق:{" "}
@@ -467,7 +467,7 @@ export default async function CompanyPage({
                             }}
                           />
                           {review.salary && review.salary > 0 && (
-                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground break-all">
                               <Briefcase className="h-4 w-4" />
                               <span>
                                 حقوق:{" "}

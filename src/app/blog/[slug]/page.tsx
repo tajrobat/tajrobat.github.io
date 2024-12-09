@@ -120,7 +120,7 @@ export default async function BlogPostPage({
         </div>
 
         <Card>
-          <CardContent className="p-6 prose prose-lg dark:prose-invert max-w-none">
+          <CardContent className="p-6 prose prose-lg dark:prose-invert max-w-none break-all">
             <MDXRemote source={post.content} />
           </CardContent>
         </Card>
