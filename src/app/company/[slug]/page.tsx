@@ -291,17 +291,17 @@ export default async function CompanyPage({
                             ))}
                           </div>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="relative overflow-hidden">
                           <div
-                            className="prose prose-lg dark:prose-invert max-w-none break-words overflow-hidden break-all"
+                            className="prose prose-lg dark:prose-invert max-w-none line-clamp-4 overflow-hidden"
                             dangerouslySetInnerHTML={{
                               __html: review.description,
                             }}
                           />
                           {review.salary && review.salary > 0 && (
                             <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-                              <Briefcase className="h-4 w-4" />
-                              <span>
+                              <Briefcase className="h-4 w-4 flex-shrink-0" />
+                              <span className="truncate">
                                 حقوق:{" "}
                                 {toPersianNumbers(review.salary)
                                   .split("")
@@ -316,6 +316,12 @@ export default async function CompanyPage({
                               </span>
                             </div>
                           )}
+                          <Link
+                            href={`/review/${review.id}`}
+                            className="absolute inset-0"
+                          >
+                            <span className="sr-only">مشاهده جزئیات نظر</span>
+                          </Link>
                         </CardContent>
                       </Card>
                     )
@@ -372,17 +378,17 @@ export default async function CompanyPage({
                             ))}
                           </div>
                         </CardHeader>
-                        <CardContent className="relative">
+                        <CardContent className="relative overflow-hidden">
                           <div
-                            className="prose prose-lg dark:prose-invert max-w-none"
+                            className="prose prose-lg dark:prose-invert max-w-none line-clamp-4 overflow-hidden"
                             dangerouslySetInnerHTML={{
                               __html: review.description,
                             }}
                           />
                           {review.salary && review.salary > 0 && (
-                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground break-all">
-                              <Briefcase className="h-4 w-4" />
-                              <span>
+                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                              <Briefcase className="h-4 w-4 flex-shrink-0" />
+                              <span className="truncate">
                                 حقوق:{" "}
                                 {toPersianNumbers(review.salary)
                                   .split("")
@@ -459,17 +465,17 @@ export default async function CompanyPage({
                             ))}
                           </div>
                         </CardHeader>
-                        <CardContent className="relative">
+                        <CardContent className="relative overflow-hidden">
                           <div
-                            className="prose prose-lg dark:prose-invert max-w-none"
+                            className="prose prose-lg dark:prose-invert max-w-none line-clamp-4 overflow-hidden"
                             dangerouslySetInnerHTML={{
                               __html: review.description,
                             }}
                           />
                           {review.salary && review.salary > 0 && (
-                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground break-all">
-                              <Briefcase className="h-4 w-4" />
-                              <span>
+                            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                              <Briefcase className="h-4 w-4 flex-shrink-0" />
+                              <span className="truncate">
                                 حقوق:{" "}
                                 {toPersianNumbers(review.salary)
                                   .split("")
@@ -546,11 +552,11 @@ export default async function CompanyPage({
                             ))}
                           </div>
                         </CardHeader>
-                        <CardContent className="relative">
+                        <CardContent className="relative overflow-hidden">
                           {review.salary && review.salary > 0 && (
                             <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-                              <Briefcase className="h-4 w-4" />
-                              <span>
+                              <Briefcase className="h-4 w-4 flex-shrink-0" />
+                              <span className="truncate">
                                 حقوق:{" "}
                                 {toPersianNumbers(review.salary)
                                   .split("")
@@ -589,33 +595,31 @@ export default async function CompanyPage({
   );
 }
 
-export async function generateMetadata(context: {
+export async function generateMetadata({
+  params,
+}: {
   params: { slug: string };
 }): Promise<Metadata> {
-  // Await the params if it's a Promise
-  const actualParams = await context.params;
-  // Retrieve the company data based on the slug
-  const company = await getCompanyBySlug(actualParams.slug);
+  const company = await getCompanyBySlug(params.slug);
   if (!company) return {};
 
-  // Generate metadata based on the company data
   const metadata = generateCompanyMetadata(company);
+  const canonicalUrl = `https://tajrobat.github.io/company/${params.slug}`;
 
   return {
     title: metadata.title,
     description: metadata.description,
     keywords: metadata.keywords,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: metadata.title,
       description: metadata.description,
-      url: `/company/${actualParams.slug ?? company.id}`,
+      url: canonicalUrl,
       type: "website",
       locale: "fa_IR",
-    },
-    alternates: {
-      canonical: `https://tajrobat.github.io/company/${
-        actualParams.slug ?? company.id
-      }`,
+      siteName: "تجربت",
     },
   };
 }

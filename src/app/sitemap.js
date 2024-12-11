@@ -32,7 +32,7 @@ export default async function sitemap() {
     {
       url: baseUrl,
       lastModified,
-      changeFrequency: "daily" ,
+      changeFrequency: "daily",
       priority: 1.0,
     },
     {
@@ -46,6 +46,12 @@ export default async function sitemap() {
       lastModified,
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/feed`,
+      lastModified,
+      changeFrequency: "daily",
+      priority: 0.8,
     },
   ];
 
