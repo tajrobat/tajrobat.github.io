@@ -9,7 +9,7 @@ import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 const vazirmatn = Vazirmatn({ subsets: ["arabic"], variable: "--font-vazir" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://tajrobat.github.io"),
+  metadataBase: new URL("https://tajrobat.work"),
   title: defaultMetadata.title,
   description: defaultMetadata.description,
   keywords: defaultMetadata.keywords,

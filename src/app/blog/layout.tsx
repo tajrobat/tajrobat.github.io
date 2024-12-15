@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: "تجربت",
   },
   alternates: {
-    canonical: "https://tajrobat.github.io/blog",
+    canonical: "https://tajrobat.work/blog",
   },
 };
 

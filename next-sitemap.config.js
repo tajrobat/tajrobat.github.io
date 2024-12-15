@@ -1,3 +1,3 @@
 export default {
-    siteUrl: 'https://tajrobat.github.io',
+    siteUrl: 'https://tajrobat.work',
   };

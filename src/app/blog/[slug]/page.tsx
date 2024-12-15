@@ -59,7 +59,7 @@ export async function generateMetadata({
       images: [ogImage],
     },
     alternates: {
-      canonical: `https://tajrobat.github.io/blog/${param.slug}`,
+      canonical: `https://tajrobat.work/blog/${param.slug}`,
     },
   };
 }

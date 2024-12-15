@@ -24,7 +24,7 @@ function generateSitemapXML(urls,types) {
 }
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://tajrobat.github.io";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://tajrobat.work";
   const lastModified = new Date().toISOString();
 
   // Static pages

@@ -34,7 +34,7 @@ export async function generateMetadata({
       publishedTime: review.created_at,
     },
     alternates: {
-      canonical: `https://tajrobat.github.io/review/${param}`,
+      canonical: `https://tajrobat.work/review/${param}`,
     },
   };
 }

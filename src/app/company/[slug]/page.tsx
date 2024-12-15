@@ -613,7 +613,7 @@ export async function generateMetadata(context: {
       locale: "fa_IR",
     },
     alternates: {
-      canonical: `https://tajrobat.github.io/company/${
+      canonical: `https://tajrobat.work/company/${
         actualParams.slug ?? company.id
       }`,
     },

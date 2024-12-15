@@ -32,4 +32,4 @@ Disallow: /*?*status=
 Crawl-delay: 5
 
 # Sitemaps
-Sitemap: https://tajrobat.github.io/sitemap.xml
+Sitemap: https://tajrobat.work/sitemap.xml

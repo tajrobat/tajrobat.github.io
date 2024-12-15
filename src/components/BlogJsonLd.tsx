@@ -23,7 +23,7 @@ export function BlogJsonLd({ post }: BlogJsonLdProps) {
       name: "تجربت",
       logo: {
         "@type": "ImageObject",
-        url: "https://tajrobat.github.io/logo.png",
+        url: "https://tajrobat.work/logo.png",
       },
     },
   };
