@@ -70,19 +70,19 @@ export default async function ReviewPage({
           <span>بازگشت به صفحه شرکت</span>
         </Link>
 
-        <Card className="max-w-3xl mx-auto">
+        <Card className="max-w-3xl mx-auto overflow-hidden">
           <CardHeader className="space-y-4">
             <div className="flex justify-between items-start gap-4">
-              <div className="space-y-1">
-                <CardTitle className="text-2xl">{review.title}</CardTitle>
+              <div className="space-y-1 min-w-0">
+                <CardTitle className="text-2xl truncate">{review.title}</CardTitle>
                 <Link
                   href={`/company/${review.company.slug ?? review.company.id}`}
                   className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
                 >
-                  <Building2 className="h-4 w-4" />
-                  <span>{review.company.name}</span>
+                  <Building2 className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{review.company.name}</span>
                 </Link>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground line-clamp-2">
                   {review.company.description}
                 </p>
               </div>
@@ -124,7 +124,7 @@ export default async function ReviewPage({
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 overflow-hidden">
             {review.job_title && (
               <div className="flex items-center gap-2 text-sm">
                 <Briefcase className="h-4 w-4 text-muted-foreground" />
@@ -134,7 +134,6 @@ export default async function ReviewPage({
 
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <div
-                className="break-all"
                 dangerouslySetInnerHTML={{
                   __html: review.description,
                 }}

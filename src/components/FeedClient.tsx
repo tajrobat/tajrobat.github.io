@@ -143,11 +143,11 @@ export default function FeedClient({ companies }: { companies: Company[] }) {
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-4">
-            <h3 className="text-lg font-semibold">{review.title}</h3>
+          <CardContent className="space-y-4 overflow-hidden">
+            <h3 className="text-lg font-semibold truncate">{review.title}</h3>
 
             <div
-              className="prose prose-sm dark:prose-invert max-w-none line-clamp-3"
+              className="prose prose-sm dark:prose-invert max-w-none line-clamp-3 overflow-hidden"
               dangerouslySetInnerHTML={{
                 __html: review.description,
               }}
@@ -158,7 +158,7 @@ export default function FeedClient({ companies }: { companies: Company[] }) {
               className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
             >
               <span>ادامه مطلب</span>
-              <ArrowUpRight className="h-4 w-4" />
+              <ArrowUpRight className="h-4 w-4 flex-shrink-0" />
             </Link>
           </CardContent>
         </Card>

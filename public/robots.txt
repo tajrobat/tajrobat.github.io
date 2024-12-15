@@ -20,7 +20,7 @@ Disallow: /*.js$
 Disallow: /*.css$
 Disallow: /*.json$
 
-# Block query parameters
+# Block query parameters that don't affect main content
 Disallow: /*?*sort=
 Disallow: /*?*filter=
 Disallow: /*?*page=
