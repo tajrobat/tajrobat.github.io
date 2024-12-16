@@ -8,7 +8,6 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { formatDate, toPersianNumbers } from "@/lib/utils";
 import ArchiveNotice from "@/components/ArchiveNotice";
-import { companies } from "@/data/companies";
 
 // Generate metadata for the review page
 export async function generateMetadata({
@@ -16,53 +15,35 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const review = await getReviewById(Number(params.id));
+  const param = await params.id;
+  const review = await getReviewById(Number(param));
+
   if (!review) return {};
 
-  const title = `${review.job_title ? `${review.job_title} در ` : ""}${
-    review.company.name
-  } | ${review.title}`;
-  const description = review.description
-    .replace(/<[^>]*>/g, "")
-    .substring(0, 160);
-
   return {
-    title,
-    description,
+    title: `تجربه کاری ${review.job_title ? `${review.job_title} ` : ""}در ${
+      review.company.name
+    } | ${review.title}`,
+    description: `${
+      review.job_title ? `${review.job_title} - ` : ""
+    }${review.description.substring(0, 160)} - ${review.company.name}`,
     openGraph: {
-      title,
-      description,
+      title: review.title,
+      description: review.description.substring(0, 160),
       type: "article",
       publishedTime: review.created_at,
-      images: [
-        {
-          url: `/api/og?title=${encodeURIComponent(title)}`,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
     },
     alternates: {
-      canonical: `https://tajrobat.work/review/${params.id}`,
+      canonical: `https://tajrobat.work/review/${param}`,
     },
   };
 }
 
 // Add this function to generate static parameters for the review page
 export async function generateStaticParams() {
-  const reviewIds: string[] = [];
-  companies.forEach((company) => {
-    company.reviews?.forEach((review) => {
-      reviewIds.push(review.id.toString());
-    });
-  });
-  return reviewIds.map((id) => ({ id }));
+  // Fetch all review IDs or any necessary parameters
+  const reviews = await getAllReviewIds(); // Ensure this returns string IDs
+  return reviews.map((id: string | number) => ({ id: String(id) })); // Convert id to string
 }
 
 export default async function ReviewPage({
