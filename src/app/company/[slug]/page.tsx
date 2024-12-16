@@ -128,7 +128,7 @@ export default async function CompanyPage({
       icon: Users,
     },
     {
-      label: "حداقل حقوق",
+      label: "ح��اقل حقوق",
       value: formatSalary(company.salary_min),
       icon: Briefcase,
     },
@@ -253,7 +253,7 @@ export default async function CompanyPage({
                         <CardHeader className="space-y-3">
                           <div className="flex justify-between items-start">
                             <div>
-                              <CardTitle className="text-xl mb-1 truncate">
+                              <CardTitle className="text-xl mb-1 truncate max-w-[90%]">
                                 {review.title}
                               </CardTitle>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -340,7 +340,7 @@ export default async function CompanyPage({
                         <CardHeader className="space-y-3">
                           <div className="flex justify-between items-start">
                             <div>
-                              <CardTitle className="text-xl mb-1">
+                              <CardTitle className="text-xl mb-1 truncate max-w-[90%]">
                                 {review.title}
                               </CardTitle>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -427,7 +427,7 @@ export default async function CompanyPage({
                         <CardHeader className="space-y-3">
                           <div className="flex justify-between items-start">
                             <div>
-                              <CardTitle className="text-xl mb-1">
+                              <CardTitle className="text-xl mb-1 truncate max-w-[90%]">
                                 {review.title}
                               </CardTitle>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -514,7 +514,7 @@ export default async function CompanyPage({
                         <CardHeader>
                           <div className="flex justify-between items-start">
                             <div>
-                              <CardTitle className="text-xl mb-1">
+                              <CardTitle className="text-xl mb-1 truncate max-w-[90%]">
                                 {review.job_title}
                               </CardTitle>
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
