@@ -251,20 +251,10 @@ export default async function CompanyPage({
                           <span className="sr-only">مشاهده جزئیات نظر</span>
                         </Link>
                         <CardHeader className="space-y-3">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <CardTitle className="text-xl mb-1 truncate max-w-[90%]">
-                                {review.title}
-                              </CardTitle>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                {formatDate(review.created_at) && (
-                                  <>
-                                    <Calendar className="h-4 w-4" />
-                                    <time>{formatDate(review.created_at)}</time>
-                                  </>
-                                )}
-                              </div>
-                            </div>
+                          <div className="flex justify-between items-center">
+                            <CardTitle className="text-xl mb-1 truncate max-w-[90%]">
+                              {review.title}
+                            </CardTitle>
                             <Badge
                               variant={
                                 review.review_status === "NOT_WORKING"
@@ -276,6 +266,14 @@ export default async function CompanyPage({
                                 ? "تجربه کاری"
                                 : "مصاحبه"}
                             </Badge>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            {formatDate(review.created_at) && (
+                              <>
+                                <Calendar className="h-4 w-4" />
+                                <time>{formatDate(review.created_at)}</time>
+                              </>
+                            )}
                           </div>
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
@@ -512,7 +510,7 @@ export default async function CompanyPage({
                         className="hover:shadow-lg transition-shadow duration-300"
                       >
                         <CardHeader>
-                          <div className="flex justify-between items-start">
+                          <div className="">
                             <div>
                               <CardTitle className="text-xl mb-1 truncate max-w-[90%]">
                                 {review.job_title}
