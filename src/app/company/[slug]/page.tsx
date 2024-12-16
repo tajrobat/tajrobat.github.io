@@ -1,4 +1,5 @@
-import { getAllCompanies, getCompanyBySlug } from "@/data/companies";
+import { Virtuoso } from "react-virtuoso";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,134 +11,29 @@ import { CompanyJsonLd } from "@/components/JsonLd";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Review } from "@/app/types/index";
+import { getCompanyData } from "@/lib/api";
 
-export function generateStaticParams() {
-  const companies = getAllCompanies();
-  return companies.map((company) => ({
-    slug: company.slug ? String(company.slug) : String(company.id),
-  }));
-}
+// Create a ReviewCard component for virtualization
+const ReviewCard = dynamic(() => import("@/components/ReviewCard"), {
+  loading: () => <ReviewSkeleton />,
+});
 
-// Helper function to convert numbers to Persian digits
-const toPersianNumbers = (num: number): string => {
-  const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-  return num.toString().replace(/\d/g, (x) => persianDigits[parseInt(x)]);
+// Virtualized review list component
+const VirtualizedReviews = ({ reviews }: { reviews: Review[] }) => {
+  return (
+    <Virtuoso
+      style={{ height: "800px" }}
+      totalCount={reviews.length}
+      itemContent={(index) => (
+        <ReviewCard review={reviews[index]} className="mb-4" />
+      )}
+    />
+  );
 };
 
-const formatSalary = (value: number) => {
-  if (value <= 0) return "مشخص نیست";
-
-  const persianNumber = toPersianNumbers(value);
-
-  const withSeparator = persianNumber
-    .split("")
-    .reverse()
-    .reduce((acc, digit, i) => {
-      if (i > 0 && i % 3 === 0) {
-        return digit + "," + acc;
-      }
-      return digit + acc;
-    }, "");
-
-  return `${withSeparator} میلیون`;
-};
-
-// Helper function to format number
-const formatNumber = (value: number) => {
-  if (value <= 0) return "مشخص نیست";
-  return toPersianNumbers(parseFloat(value.toFixed(1)));
-};
-
-// Update the formatDate function to handle ISO date strings
-const formatDate = (dateString: string) => {
-  try {
-    // Handle both ISO date strings and regular date strings
-    const date = new Date(dateString);
-
-    // Check if date is valid
-    if (isNaN(date.getTime())) {
-      return null;
-    }
-
-    const formatter = new Intl.DateTimeFormat("fa-IR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric", // Add day to show full date
-    });
-
-    return formatter.format(date);
-  } catch {
-    return null;
-  }
-};
-
-// Update the filterReviews function
-const filterReviews = (reviews: Review[], type: string) => {
-  // Sort reviews by ISO date in descending order
-  const sortedReviews = [...reviews].sort((a, b) => {
-    const dateA = new Date(a.created_at);
-    const dateB = new Date(b.created_at);
-    return dateB.getTime() - dateA.getTime();
-  });
-
-  // Then apply the type filter
-  switch (type) {
-    case "working":
-      return sortedReviews.filter(
-        (review) => review.review_status === "NOT_WORKING"
-      );
-    case "interview":
-      return sortedReviews.filter(
-        (review) => review.review_status !== "NOT_WORKING"
-      );
-    case "salary":
-      return sortedReviews.filter(
-        (review) => review.salary && review.salary > 0 && review.job_title
-      );
-    default:
-      return sortedReviews;
-  }
-};
-
-export default async function CompanyPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  // Await the params if it's a Promise
-  const actualParams = await params;
-
-  const company = await getCompanyBySlug(actualParams.slug);
-
-  if (!company) {
-    notFound();
-  }
-
-  // Define stats data
-  const statsData = [
-    {
-      label: "میانگین نظرات",
-      value: formatNumber(company.review_average),
-      icon: Star,
-    },
-    {
-      label: "تعداد نظرات",
-      value: company.reviews?.length
-        ? toPersianNumbers(company.reviews.length)
-        : "مشخص نیست",
-      icon: Users,
-    },
-    {
-      label: "حداقل حقوق",
-      value: formatSalary(company.salary_min),
-      icon: Briefcase,
-    },
-    {
-      label: "حداکثر حقوق",
-      value: formatSalary(company.salary_max),
-      icon: Briefcase,
-    },
-  ];
+export default function CompanyPage({ params }: { params: { slug: string } }) {
+  const company = getCompanyData(params.slug);
+  if (!company) notFound();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/50">
@@ -622,4 +518,11 @@ export async function generateMetadata({
       locale: "fa_IR",
     },
   };
+}
+
+// Generate static paths
+export function generateStaticParams() {
+  return companies.map((company) => ({
+    slug: company.slug || company.id.toString(),
+  }));
 }

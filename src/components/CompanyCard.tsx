@@ -13,9 +13,9 @@ export default function CompanyCard({ company }: CompanyCardProps) {
 
   return (
     <Link href={companyUrl}>
-      <div className="h-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col hover:shadow-lg transition-shadow duration-200">
+      <div className="h-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col hover:shadow-lg transition-shadow duration-200 overflow-hidden">
         <div className="flex justify-between items-start gap-2 mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">
             {company.name}
           </h3>
           {company.rate > 0 && (
@@ -36,7 +36,7 @@ export default function CompanyCard({ company }: CompanyCardProps) {
           )}
         </div>
 
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2 pt-2">
+        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
           {company.description}
         </p>
 
