@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Review } from "@/app/types/index";
 import { getCompanyData } from "@/lib/api";
+import { getAllCompanies } from "@/data/companies";
 
 // Create a ReviewCard component for virtualization
 const ReviewCard = dynamic(() => import("@/components/ReviewCard"), {
@@ -29,6 +30,12 @@ const VirtualizedReviews = ({ reviews }: { reviews: Review[] }) => {
       )}
     />
   );
+};
+
+// Helper function to convert numbers to Persian digits
+const toPersianNumbers = (num: number): string => {
+  const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+  return num.toString().replace(/\d/g, (x) => persianDigits[parseInt(x)]);
 };
 
 export default function CompanyPage({ params }: { params: { slug: string } }) {
@@ -496,12 +503,11 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const actualParams = await params;
-  const company = await getCompanyBySlug(actualParams.slug);
+  const company = getCompanyData(params.slug);
   if (!company) return {};
 
   const metadata = generateCompanyMetadata(company);
-  const canonicalUrl = `https://tajrobat.work/company/${actualParams.slug}`;
+  const canonicalUrl = `https://tajrobat.work/company/${params.slug}`;
 
   return {
     title: metadata.title,
@@ -522,6 +528,7 @@ export async function generateMetadata({
 
 // Generate static paths
 export function generateStaticParams() {
+  const companies = getAllCompanies();
   return companies.map((company) => ({
     slug: company.slug || company.id.toString(),
   }));
